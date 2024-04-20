@@ -2,7 +2,7 @@
 
 | Splash | Home | Home |
 | ------------- | ------------- | ------------- |
-| ![splash](https://github.com/arif-cloud/Challenge-UniversitiesApp/assets/73065590/a0549436-5729-4f33-9a14-37e36572160d) | ![home](https://github.com/arif-cloud/Challenge-UniversitiesApp/assets/73065590/b97c5133-744b-4f71-8c34-aff03cb24bbd) | ![home1](https://github.com/arif-cloud/Challenge-UniversitiesApp/assets/73065590/a0789ba1-f001-409e-934c-358da7f93041) |  | 
+| ![splash](https://github.com/arif-cloud/Challenge-UniversitiesApp/assets/73065590/a0549436-5729-4f33-9a14-37e36572160d) | ![home](https://github.com/arif-cloud/Challenge-UniversitiesApp/assets/73065590/b97c5133-744b-4f71-8c34-aff03cb24bbd) | ![home1](https://github.com/arif-cloud/Challenge-UniversitiesApp/assets/73065590/d717032d-f106-436d-bc5d-e537b9ca2c93) |
 
 | Favorite | Favorite | Website |
 | ------------- | ------------- | ------------- |
