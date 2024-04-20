@@ -1,7 +1,5 @@
 package com.example.universitiesapp.presentation.home
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData

@@ -90,7 +90,7 @@ fun UniversityDataItem(
                             university = university,
                             isExpanded = expandedUniversityIndexes.contains(index),
                             isFavorite = isFavorite,
-                            onClickExpandIcon = { if (expandedUniversityIndexes.contains(index)) expandedUniversityIndexes.remove(index) else expandedUniversityIndexes.add(index) },
+                            onClickExpand = { if (expandedUniversityIndexes.contains(index)) expandedUniversityIndexes.remove(index) else expandedUniversityIndexes.add(index) },
                             onAddFavorite = { viewModel.addFavorite(university) },
                             onDeleteFavorite = { viewModel.deleteFavorite(university) },
                             onRedirectToPhoneCall = { viewModel.viewPhoneCallScreen(university.phone ?: "") },

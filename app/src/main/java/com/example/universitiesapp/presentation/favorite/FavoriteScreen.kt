@@ -84,7 +84,7 @@ fun FavoriteScreen(
                                 university = university,
                                 isExpanded = expandedIndexes.contains(index),
                                 isFavorite = true,
-                                onClickExpandIcon = { if (expandedIndexes.contains(index)) expandedIndexes.remove(index) else expandedIndexes.add(index) },
+                                onClickExpand = { if (expandedIndexes.contains(index)) expandedIndexes.remove(index) else expandedIndexes.add(index) },
                                 onAddFavorite = { /*TODO*/ },
                                 onDeleteFavorite = { viewModel.deleteFavorite(university) },
                                 onRedirectToPhoneCall = { viewModel.viewPhoneCallScreen(university.phone ?: "") },

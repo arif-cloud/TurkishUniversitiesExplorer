@@ -37,7 +37,7 @@ fun UniversityItem(
     university: University,
     isExpanded: Boolean,
     isFavorite: Boolean,
-    onClickExpandIcon: () -> Unit,
+    onClickExpand: () -> Unit,
     onAddFavorite: () -> Unit,
     onDeleteFavorite: () -> Unit,
     onRedirectToPhoneCall: () -> Unit,
@@ -46,7 +46,7 @@ fun UniversityItem(
     Card(
         shape = RoundedCornerShape(10.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
-        modifier = Modifier.clickable { onClickExpandIcon() }
+        modifier = Modifier.clickable { if (!university.allFieldsEmpty()) onClickExpand() }
     ) {
         Column(
             verticalArrangement = Arrangement.spacedBy(5.dp), modifier = Modifier.padding(5.dp)
