@@ -3,7 +3,6 @@ package com.example.universitiesapp.di
 import android.content.Context
 import androidx.room.Room
 import com.example.universitiesapp.common.Constants
-import com.example.universitiesapp.data.local.db.UniversitiesDao
 import com.example.universitiesapp.data.local.db.UniversityDatabase
 import com.example.universitiesapp.data.local.repository.FavoriteUniversityRepositoryImpl
 import com.example.universitiesapp.data.remote.api.UniversityApi
@@ -46,12 +45,6 @@ object AppModule {
     @Singleton
     fun provideUniversityDatabase(@ApplicationContext context: Context) : UniversityDatabase {
         return Room.databaseBuilder(context, UniversityDatabase::class.java, "universities").allowMainThreadQueries().build()
-    }
-
-    @Provides
-    @Singleton
-    fun provideUniversitiesDao(database: UniversityDatabase) : UniversitiesDao {
-        return database.UniversitiesDao()
     }
 
     @Provides

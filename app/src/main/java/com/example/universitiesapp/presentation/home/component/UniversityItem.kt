@@ -38,9 +38,8 @@ fun UniversityItem(
     isExpanded: Boolean,
     isFavorite: Boolean,
     onClickExpand: () -> Unit,
-    onAddFavorite: () -> Unit,
-    onDeleteFavorite: () -> Unit,
-    onRedirectToPhoneCall: () -> Unit,
+    onClickFavoriteIcon: () -> Unit,
+    onPhoneCall: () -> Unit,
     navController: NavController,
 ) {
     Card(
@@ -72,7 +71,7 @@ fun UniversityItem(
                     Icon(
                         imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
                         contentDescription = "favorite_icon",
-                        modifier = Modifier.clickable { if (isFavorite) onDeleteFavorite() else onAddFavorite() }
+                        modifier = Modifier.clickable { onClickFavoriteIcon() }
                     )
                 }
             )
@@ -80,10 +79,12 @@ fun UniversityItem(
                 val universityDetailMap = university.toMap()
                 val encodedUrl = URLEncoder.encode(university.website, StandardCharsets.UTF_8.toString())
                 universityDetailMap.forEach { (key, value) ->
-                    UniversityDetailItem(title = key,
+                    UniversityDetailItem(
+                        title = key,
                         value = value,
                         onClickWebsiteItem = { navController.navigate("${Screen.WebView.route}/${university.name}/$encodedUrl") },
-                        onClickPhoneItem = { onRedirectToPhoneCall() })
+                        onClickPhoneItem = { onPhoneCall() }
+                    )
                 }
             }
         }

@@ -16,7 +16,7 @@ interface UniversitiesDao {
     @Query("SELECT EXISTS(SELECT * FROM favorite_university WHERE name = :universityName)")
     fun checkUniversityExist(universityName : String) : Flow<Boolean>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertUniversity(universityEntity: UniversityEntity)
 
     @Delete

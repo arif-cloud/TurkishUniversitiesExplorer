@@ -10,12 +10,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.example.universitiesapp.R
-import com.example.universitiesapp.presentation.root.screen.Screen
 import com.example.universitiesapp.ui.theme.Typography
 
 @Composable
@@ -37,12 +34,15 @@ fun UniversityDetailItem(
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(4.dp),
-        modifier = Modifier.fillMaxWidth().clickable {
-            if (title == "website")
-                onClickWebsiteItem()
-            if (title == "phone")
-                onClickPhoneItem()
-        }
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable {
+                if (title == "website")
+                    onClickWebsiteItem()
+                if (title == "phone") {
+                    onClickPhoneItem()
+                }
+            }
     ) {
         Icon(
             imageVector = ImageVector.vectorResource(id = iconResource),

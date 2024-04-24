@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.universitiesapp.presentation.home.component.UniversityItem
+import com.example.universitiesapp.presentation.root.permissionResultLauncher
 import com.example.universitiesapp.ui.theme.Red
 import com.example.universitiesapp.ui.theme.Typography
 
@@ -38,7 +39,8 @@ fun FavoriteScreen(
     viewModel: FavoriteViewModel = hiltViewModel()
 ) {
     val state by viewModel.favoriteState.collectAsState()
-    val expandedIndexes = rememberSaveable(
+    val phoneCallPermissionResultLauncher = permissionResultLauncher()
+    val expandedUniversityIndexes = rememberSaveable(
         saver = listSaver(
             save = { stateList -> stateList.toList() },
             restore = { it.toMutableStateList() }
@@ -82,12 +84,20 @@ fun FavoriteScreen(
                         itemsIndexed(universities) {index, university ->
                             UniversityItem(
                                 university = university,
-                                isExpanded = expandedIndexes.contains(index),
+                                isExpanded = expandedUniversityIndexes.contains(index),
                                 isFavorite = true,
-                                onClickExpand = { if (expandedIndexes.contains(index)) expandedIndexes.remove(index) else expandedIndexes.add(index) },
-                                onAddFavorite = { /*TODO*/ },
-                                onDeleteFavorite = { viewModel.deleteFavorite(university) },
-                                onRedirectToPhoneCall = { viewModel.viewPhoneCallScreen(university.phone ?: "") },
+                                onClickExpand = {
+                                    if (expandedUniversityIndexes.contains(index)) expandedUniversityIndexes.remove(
+                                        index
+                                    ) else expandedUniversityIndexes.add(index)
+                                },
+                                onClickFavoriteIcon = { viewModel.deleteFavorite(university) },
+                                onPhoneCall = {
+                                    viewModel.viewPhoneCall(
+                                        university.phone ?: "",
+                                        phoneCallPermissionResultLauncher
+                                    )
+                                },
                                 navController = navController
                             )
                         }

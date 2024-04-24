@@ -15,6 +15,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.saveable.listSaver
@@ -25,21 +27,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.example.universitiesapp.R
 import com.example.universitiesapp.data.remote.api.dto.UniversityData
-import com.example.universitiesapp.presentation.home.HomeViewModel
+import com.example.universitiesapp.domain.model.University
 import com.example.universitiesapp.ui.theme.Orange
 import com.example.universitiesapp.ui.theme.Typography
 
 @Composable
 fun UniversityDataItem(
-    universityData : UniversityData?,
-    isExpanded : Boolean,
-    onClickUniversityDataItem : () -> Unit,
-    viewModel: HomeViewModel,
-    navController: NavController
+    universityData: UniversityData?,
+    isExpanded: Boolean,
+    onClickUniversityDataItem: () -> Unit,
+    favoriteState: @Composable (String) -> State<Boolean>,
+    onAddFavorite: (University) -> Unit,
+    onDeleteFavorite: (University) -> Unit,
+    onPhoneCall: (String) -> Unit,
+    navController: NavController,
 ) {
     val expandedUniversityIndexes = rememberSaveable(
         saver = listSaver(
@@ -47,6 +51,9 @@ fun UniversityDataItem(
             restore = { it.toMutableStateList() }
         )
     ) { mutableStateListOf<Int>() }
+    LaunchedEffect(key1 = isExpanded) {
+        if (!isExpanded) expandedUniversityIndexes.clear()
+    }
     Card(
         shape = RoundedCornerShape(10.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
@@ -85,15 +92,18 @@ fun UniversityDataItem(
             content = {
                 universityData?.universities?.let {universityList ->
                     universityList.forEachIndexed { index, university ->
-                        val isFavorite by viewModel.checkFavorite(university.name ?: "").collectAsStateWithLifecycle(initialValue = false)
+                        val isFavorite by favoriteState(university.name ?: "")
                         UniversityItem(
                             university = university,
                             isExpanded = expandedUniversityIndexes.contains(index),
                             isFavorite = isFavorite,
                             onClickExpand = { if (expandedUniversityIndexes.contains(index)) expandedUniversityIndexes.remove(index) else expandedUniversityIndexes.add(index) },
-                            onAddFavorite = { viewModel.addFavorite(university) },
-                            onDeleteFavorite = { viewModel.deleteFavorite(university) },
-                            onRedirectToPhoneCall = { viewModel.viewPhoneCallScreen(university.phone ?: "") },
+                            onClickFavoriteIcon = {
+                                if (isFavorite) onDeleteFavorite(university) else onAddFavorite(
+                                    university
+                                )
+                            },
+                            onPhoneCall = { onPhoneCall(university.phone ?: "") },
                             navController = navController
                         )
                     }

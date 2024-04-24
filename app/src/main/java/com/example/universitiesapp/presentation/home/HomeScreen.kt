@@ -27,16 +27,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import com.example.universitiesapp.R
 import com.example.universitiesapp.data.remote.api.dto.UniversityData
 import com.example.universitiesapp.presentation.home.component.UniversityDataItem
+import com.example.universitiesapp.presentation.root.permissionResultLauncher
 import com.example.universitiesapp.presentation.root.screen.Screen
 import com.example.universitiesapp.ui.theme.Green
+import com.example.universitiesapp.ui.theme.Red
 import com.example.universitiesapp.ui.theme.Typography
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -46,6 +50,7 @@ fun HomeScreen(
     navController: NavController,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
+    val phoneCallPermissionResultLauncher = permissionResultLauncher()
     val expandedProvinceIndexes = rememberSaveable(
         saver = listSaver(
             save = { stateList -> stateList.toList() },
@@ -87,6 +92,7 @@ fun HomeScreen(
             )
         },
         content = {paddingValues ->
+
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -102,16 +108,39 @@ fun HomeScreen(
                             universityData = universitiesData[index],
                             isExpanded = expandedProvinceIndexes.contains(index),
                             onClickUniversityDataItem = { if (expandedProvinceIndexes.contains(index)) expandedProvinceIndexes.remove(index) else expandedProvinceIndexes.add(index) },
-                            viewModel = viewModel,
+                            favoriteState = { universityName ->
+                                viewModel.checkFavorite(
+                                    universityName
+                                ).collectAsStateWithLifecycle(initialValue = false)
+                            },
+                            onAddFavorite = { university -> viewModel.addFavorite(university) },
+                            onDeleteFavorite = { university -> viewModel.deleteFavorite(university) },
+                            onPhoneCall = { phoneNumber ->
+                                viewModel.viewPhoneCall(
+                                    phoneNumber,
+                                    phoneCallPermissionResultLauncher
+                                )
+                            },
                             navController = navController
                         )
                     }
-                    if (universitiesData.loadState.append == LoadState.Loading) {
+                    if (universitiesData.loadState.append is LoadState.Loading) {
                         item {
                             CircularProgressIndicator(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .wrapContentWidth(Alignment.CenterHorizontally)
+                            )
+                        }
+                    }
+                    if (universitiesData.loadState.append is LoadState.Error) {
+                        item {
+                            Text(
+                                text = (universitiesData.loadState.append as LoadState.Error).error.localizedMessage
+                                    ?: "",
+                                color = Red,
+                                modifier = Modifier.fillMaxWidth(),
+                                textAlign = TextAlign.Center
                             )
                         }
                     }

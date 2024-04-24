@@ -1,5 +1,6 @@
 package com.example.universitiesapp.presentation.home
 
+import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
@@ -10,7 +11,7 @@ import com.example.universitiesapp.domain.use_case.AddUniversityToFavorites
 import com.example.universitiesapp.domain.use_case.CheckUniversityIsFavorite
 import com.example.universitiesapp.domain.use_case.DeleteUniversityFromFavorites
 import com.example.universitiesapp.domain.use_case.GetUniversities
-import com.example.universitiesapp.domain.use_case.RedirectToPhoneCall
+import com.example.universitiesapp.domain.use_case.MakePhoneCall
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -24,7 +25,7 @@ class HomeViewModel @Inject constructor(
     private val addUniversityToFavorites: AddUniversityToFavorites,
     private val deleteUniversityFromFavorites: DeleteUniversityFromFavorites,
     private val checkUniversityIsFavorite: CheckUniversityIsFavorite,
-    private val redirectToPhoneCall: RedirectToPhoneCall
+    private val makePhoneCall: MakePhoneCall,
 ) : ViewModel() {
 
     private val _pagingData = getUniversities().cachedIn(scope = viewModelScope)
@@ -47,8 +48,11 @@ class HomeViewModel @Inject constructor(
         awaitClose { job.cancel() }
     }
 
-    fun viewPhoneCallScreen(phoneNumber : String) {
-        redirectToPhoneCall(phoneNumber)
+    fun viewPhoneCall(
+        phoneNumber: String,
+        phoneCallPermissionResultLauncher: ManagedActivityResultLauncher<String, Boolean>,
+    ) {
+        makePhoneCall(phoneNumber, phoneCallPermissionResultLauncher)
     }
 
 }
