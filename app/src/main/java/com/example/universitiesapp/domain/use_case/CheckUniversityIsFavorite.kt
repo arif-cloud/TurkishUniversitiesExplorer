@@ -7,7 +7,7 @@ import javax.inject.Inject
 class CheckUniversityIsFavorite @Inject constructor(
     private val repository: FavoriteUniversityRepository
 ) {
-    suspend operator fun invoke(universityName : String) : Flow<Boolean> {
+    operator fun invoke(universityName: String): Flow<Boolean> {
         return repository.checkUniversityFavorite(universityName)
     }
 }

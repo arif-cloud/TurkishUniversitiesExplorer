@@ -8,7 +8,7 @@ import javax.inject.Inject
 class GetFavoriteUniversities @Inject constructor(
     private val repository: FavoriteUniversityRepository
 ) {
-    suspend operator fun invoke() : Flow<List<UniversityEntity>> {
+    operator fun invoke(): Flow<List<UniversityEntity>> {
         return repository.getFavoriteUniversities()
     }
 }

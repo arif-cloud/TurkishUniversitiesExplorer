@@ -16,11 +16,11 @@ class FavoriteUniversityRepositoryImpl @Inject constructor(
     private val ioDispatcher : CoroutineDispatcher = Dispatchers.IO
 ) : FavoriteUniversityRepository {
 
-    override suspend fun getFavoriteUniversities(): Flow<List<UniversityEntity>> {
+    override fun getFavoriteUniversities(): Flow<List<UniversityEntity>> {
         return dao.getAllUniversities()
     }
 
-    override suspend fun checkUniversityFavorite(universityName: String): Flow<Boolean> {
+    override fun checkUniversityFavorite(universityName: String): Flow<Boolean> {
         return dao.checkUniversityExist(universityName)
     }
 

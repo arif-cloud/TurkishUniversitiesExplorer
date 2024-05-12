@@ -13,9 +13,11 @@ import com.example.universitiesapp.domain.use_case.DeleteUniversityFromFavorites
 import com.example.universitiesapp.domain.use_case.GetUniversities
 import com.example.universitiesapp.domain.use_case.MakePhoneCall
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -41,7 +43,7 @@ class HomeViewModel @Inject constructor(
 
     fun checkFavorite(universityName: String): Flow<Boolean> = callbackFlow {
         val job = viewModelScope.launch {
-            checkUniversityIsFavorite(universityName).collect { isFavorite ->
+            checkUniversityIsFavorite(universityName).flowOn(Dispatchers.IO).collect { isFavorite ->
                 trySend(isFavorite)
             }
         }
